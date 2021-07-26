@@ -1,0 +1,580 @@
+basePath: /v1
+definitions:
+  http.TrxRequest:
+    properties:
+      accountId:
+        type: integer
+      amount:
+        type: number
+      description:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    required:
+    - accountId
+    - amount
+    - description
+    - name
+    - type
+    type: object
+  models.Account:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - description
+    - name
+    - type
+    type: object
+  models.SummaryDaily:
+    properties:
+      averageIn:
+        type: number
+      averageOut:
+        type: number
+      day:
+        type: integer
+      month:
+        type: integer
+      year:
+        type: integer
+    type: object
+  models.SummaryMonthly:
+    properties:
+      averageIn:
+        type: number
+      averageOut:
+        type: number
+      month:
+        type: integer
+      year:
+        type: integer
+    type: object
+  models.Transaction:
+    properties:
+      account:
+        $ref: '#/definitions/models.Account'
+      amountIn:
+        type: number
+      amountOut:
+        type: number
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - amountIn
+    - amountOut
+    - description
+    - name
+    - type
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      status:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+host: localhost:2021
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Finance API server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Finance API
+  version: "1.0"
+paths:
+  /account:
+    get:
+      consumes:
+      - application/json
+      description: get list account
+      parameters:
+      - description: name search by keyword
+        in: query
+        name: keyword
+        type: string
+      - description: filter by type
+        in: query
+        name: type
+        type: string
+      - description: limit list
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: offset list
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            items:
+              $ref: '#/definitions/models.Account'
+            type: array
+      summary: Show List account
+    post:
+      consumes:
+      - application/json
+      description: Create Account
+      parameters:
+      - description: models.Account without ID
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/models.Account'
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/models.Account'
+      summary: Create an account
+  /account/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete account by ID
+      parameters:
+      - description: account id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+          headers:
+            Token:
+              description: qwerty
+              type: string
+      summary: Delete account
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      operationId: get-string-by-int
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: account id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/models.Account'
+      summary: Show a account
+    patch:
+      consumes:
+      - application/json
+      description: Update account by ID
+      parameters:
+      - description: account id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: models.Account without ID
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/models.Account'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/models.Account'
+      summary: Update account
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login User
+      parameters:
+      - description: models.User without ID
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login user
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: get string by JWT token
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Show a user
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Create User
+      parameters:
+      - description: models.User without ID
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Create a user
+  /transaction:
+    get:
+      consumes:
+      - application/json
+      description: get list Transaction
+      parameters:
+      - description: name search by keyword
+        in: query
+        name: keyword
+        type: string
+      - description: filter by type
+        in: query
+        name: type
+        type: string
+      - description: filter by type
+        in: query
+        name: accountId
+        type: integer
+      - description: limit list
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: offset list
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            items:
+              $ref: '#/definitions/models.Transaction'
+            type: array
+      summary: Show List Transaction
+    post:
+      consumes:
+      - application/json
+      description: Create Transaction
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: TrxRequest Body
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/http.TrxRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      summary: Create a Transaction
+  /transaction/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Transaction by ID
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Transaction id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+          headers:
+            Token:
+              description: qwerty
+              type: string
+      summary: Delete Transaction
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      operationId: get-trx-by-int
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Transaction id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      summary: Show a Transaction
+    patch:
+      consumes:
+      - application/json
+      description: Update Transaction by ID
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: account id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: TrxRequest Body
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/http.TrxRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      summary: Update Transaction
+  /transaction/daily:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            items:
+              $ref: '#/definitions/models.SummaryDaily'
+            type: array
+      summary: Show a Transaction Daily Summary
+  /transaction/monthly:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            items:
+              $ref: '#/definitions/models.SummaryMonthly'
+            type: array
+      summary: Show a Transaction Monthly Summary
+schemes:
+- http
+swagger: "2.0"
